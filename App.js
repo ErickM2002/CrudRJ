@@ -22,7 +22,7 @@ class App extends React.Component{
         <>
         <Container>
         <br />
-        <Button color='primary'>Insertar nuevo Vengador</Button>
+        <Button color='success'>Insertar nuevo Vengador</Button>
         <br /><br />
 
         <Table>
