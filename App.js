@@ -22,6 +22,7 @@ class App extends React.Component{
             rol:''
         },
         modalInsertar: false,
+        modalEditar: false,
     };
     
 handleChange=e=>{
@@ -39,6 +40,49 @@ mostrarModalInsertar=()=>{
 
 ocultarModalInsertar=()=>{
     this.setState({modalInsertar: false});
+}
+
+mostrarModalEditar=(regitro)=>{
+    this.setState({modalEditar: true, form: registro});
+}
+
+ocultarModalEditar=()=>{
+    this.setState({modalEditar: false});
+}
+
+insertar=()=>{
+    var valorNuevo={...this.state.form};
+    valorNuevo.id=this.state.data.length+1;
+    var lista=this.state.data;
+    lista.push(valorNuevo);
+    this.setState({data: lista, modalInsertar: false});
+}
+
+editar=(dato)=>{
+    var contador=0;
+    var lista=this.state.data;
+    lista.map((registro)=>{
+        if(dato.id==registro.id){
+            lista[contador].personaje=dato.personaje;
+            lista[contador].rol=dato.rol;
+        }
+        contador++;
+    });
+    this.setState({data: lista, modalEditar: false});
+}
+
+eliminar=(dato)=>{
+    var opcion=window.confirm("¿Realmente desea eliminar el registro?"+dato.id);
+    var contador=0;
+    var lista=this.state.data;
+    lista.map((registro)=>{
+        if(registro.id==dato.id){
+            lista.splice(contador,1);
+        }
+        contador++;
+    });
+    this.setState({data:lista});
+
 }
 
     render(){
@@ -64,8 +108,8 @@ ocultarModalInsertar=()=>{
                         <td>{elemento.id}</td>
                         <td>{elemento.personaje}</td>
                         <td>{elemento.rol}</td>
-                        <td><Button color='primary'>Editar</Button>{"  "}
-                        <Button color='danger'>Eliminar</Button></td>
+                        <td><Button color='primary' onClick={()=>this.mostrarModalEditar(elemento)}>Editar</Button>{"  "}
+                        <Button color='danger' onClick={()=>this.eliminar(elemento)}>Eliminar</Button></td>
                     </tr>
                 ))}
             </tbody>
@@ -103,8 +147,43 @@ ocultarModalInsertar=()=>{
             </ModalBody>
 
             <ModalFooter>
-                <Button color='primary'>Insertar</Button>
-                <Button color='danger' onClick={()=>this.mostrarModalInsertar()}>Cancelar</Button>
+                <Button color='primary' onClick={()=>this.insertar()}>Insertar</Button>
+                <Button color='danger' onClick={()=>this.ocultarModalInsertar()}>Cancelar</Button>
+            </ModalFooter>
+        </Modal>
+
+
+        <Modal isOpen={this.state.modalEditar}>
+            <ModalHeader>
+                <div>
+                    <h3>Editar Registro</h3>
+                </div>
+            </ModalHeader>
+
+            <ModalBody>
+                <FormGroup>
+                    <label>Id:</label>
+                    <input className='form-control' readOnly='text' value={this.state.form.id}/>
+                </FormGroup>
+            </ModalBody>
+
+            <ModalBody>
+                <FormGroup>
+                    <label>Personaje:</label>
+                    <input className='form-control' name='personaje' type='text' onChange={this.handleChange} value={this.state.form.personaje}/>
+                </FormGroup>
+            </ModalBody>
+
+            <ModalBody>
+                <FormGroup>
+                    <label>Rol:</label>
+                    <input className='form-control' name='rol' type='text' onChange={this.handleChange} value={this.state.form.rol}/>
+                </FormGroup>
+            </ModalBody>
+
+            <ModalFooter>
+                <Button color='primary' onClick={()=>this.editar(this.state.form)}>Editar</Button>
+                <Button color='danger' onClick={()=>this.ocultarModalEditar()}>Cancelar</Button>
             </ModalFooter>
         </Modal>
         </> );
