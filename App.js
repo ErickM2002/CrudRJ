@@ -35,15 +35,15 @@ class App extends React.Component{
                 </tr>
             </thead>
             <tbody>
-                {this.state.data.map((elemento)=>{
+                {this.state.data.map((elemento)=>(
                     <tr>
                         <td>{elemento.id}</td>
                         <td>{elemento.personaje}</td>
                         <td>{elemento.rol}</td>
-                        <td><Button color='primary'>Editar</Button></td>
-                        <td><Button color='danger'>Eliminar</Button></td>
+                        <td><Button color='primary'>Editar</Button>{"  "}
+                        <Button color='danger'>Eliminar</Button></td>
                     </tr>
-                })}
+                ))}
             </tbody>
 
         </Table>
