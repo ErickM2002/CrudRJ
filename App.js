@@ -15,14 +15,38 @@ const data = [
 
 class App extends React.Component{
     state={
-        data: data
-    }
+        data: data,
+        form:{
+            id:'',
+            personaje:'',
+            rol:''
+        },
+        modalInsertar: false,
+    };
+    
+handleChange=e=>{
+    this.setState({
+        form:{
+            ...this.state.form,
+            [e.target.name]: e.target.value,
+        }
+    });
+}
+
+mostrarModalInsertar=()=>{
+    this.setState({modalInsertar: true});
+}
+
+ocultarModalInsertar=()=>{
+    this.setState({modalInsertar: false});
+}
+
     render(){
         return(
         <>
         <Container>
         <br />
-        <Button color='success'>Insertar nuevo Vengador</Button>
+        <Button color='success' onClick={()=>this.mostrarModalInsertar()}>Insertar nuevo Vengador</Button>
         <br /><br />
 
         <Table>
@@ -48,6 +72,41 @@ class App extends React.Component{
 
         </Table>
         </Container>
-        </> )
+
+
+        <Modal isOpen={this.state.modalInsertar}>
+            <ModalHeader>
+                <div>
+                    <h3>Insertar Registro</h3>
+                </div>
+            </ModalHeader>
+
+            <ModalBody>
+                <FormGroup>
+                    <label>Id:</label>
+                    <input className='form-control' readOnly='text' value={this.state.data.length+1}/>
+                </FormGroup>
+            </ModalBody>
+
+            <ModalBody>
+                <FormGroup>
+                    <label>Personaje:</label>
+                    <input className='form-control' name='personaje' type='text' onChange={this.handleChange}/>
+                </FormGroup>
+            </ModalBody>
+
+            <ModalBody>
+                <FormGroup>
+                    <label>Rol:</label>
+                    <input className='form-control' name='rol' type='text' onChange={this.handleChange}/>
+                </FormGroup>
+            </ModalBody>
+
+            <ModalFooter>
+                <Button color='primary'>Insertar</Button>
+                <Button color='danger' onClick={()=>this.mostrarModalInsertar()}>Cancelar</Button>
+            </ModalFooter>
+        </Modal>
+        </> );
     }
 }
